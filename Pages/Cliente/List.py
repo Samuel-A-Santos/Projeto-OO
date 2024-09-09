@@ -1,14 +1,12 @@
 from unittest import main
 import streamlit as st
 import Controllers.ClienteController as ClienteController
-from streamlit import caching
 import Pages.Cliente.Create as PageCreateCliente
 
-
 def List():
-    params = st.experimental_get_query_params()
+    params = st.query_params
     if params.get("id") == None:
-        st.experimental_set_query_params()
+        st.query_params.clear()
         colms = st.columns((1, 2, 1, 2, 1, 1))
         campos = ['Nº', 'Nome', 'Idade', 'Profissão', 'Excluir', 'Alterar']
         for col, campo_nome in zip(colms, campos):
@@ -31,15 +29,13 @@ def List():
                 ClienteController.Excluir(item.id)
                 button_space_excluir.button(
                     'Excluído', 'btnExcluir' + str(item.id))
-                st.experimental_rerun()
+                st.query_params.clear()  # Forçar recarga da página
             if on_click_alterar:
-                st.experimental_set_query_params(
-                    id=[item.id]
-                )
-                st.experimental_rerun()
+                st.query_params['id'] = [item.id]
+                st.query_params.clear()  # Forçar recarga da página
     else:
         on_click_voltar = st.button("Voltar")
         if on_click_voltar:
-            st.experimental_set_query_params()
-            st.experimental_rerun()
+            st.query_params.clear()
+            st.query_params.clear()  # Forçar recarga da página
         PageCreateCliente.Create()

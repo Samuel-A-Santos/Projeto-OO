@@ -1,17 +1,15 @@
-import this
-from turtle import onclick
-import streamlit as st;
+import streamlit as st
+from mongoengine import connect
 import Controllers.ClienteController as ClienteController
 import models.Cliente as cliente
+
 def Create():
-    idAlteracao = st.experimental_get_query_params()
+    idAlteracao = st.query_params
     clienteRecuperado = None
     if idAlteracao.get("id") != None:
         idAlteracao = idAlteracao.get("id")[0]
         clienteRecuperado = ClienteController.SelecionarById(idAlteracao)
-        st.experimental_set_query_params(
-            id=[clienteRecuperado.id]
-        )
+        st.query_params['id'] = str(clienteRecuperado.id)
         st.title("Alterar cliente")
     else:
         st.title("Incluir cliente")
@@ -28,14 +26,15 @@ def Create():
             input_occupation = st.selectbox(label="Selecione sua profissão", options=listOccupation, index=listOccupation.index(clienteRecuperado.profissao))
         input_button_submit = st.form_submit_button("Enviar")
 
-
     if input_button_submit:
         if clienteRecuperado == None:
-            ClienteController.Incluir(cliente.Cliente(0, input_name, input_age, input_occupation))
-            st.success("Cliente incluido com sucesso!")
+            novo_cliente = cliente.Cliente(nome=input_name, idade=input_age, profissao=input_occupation)
+            ClienteController.Incluir(novo_cliente)
+            st.success("Cliente incluído com sucesso!")
         else:
-            st.experimental_set_query_params()
-            ClienteController.Alterar(cliente.Cliente(clienteRecuperado.id, input_name, input_age, input_occupation))
+            st.query_params['id'] = str(clienteRecuperado.id)
+            clienteRecuperado.nome = input_name
+            clienteRecuperado.idade = input_age
+            clienteRecuperado.profissao = input_occupation
+            ClienteController.Alterar(clienteRecuperado)
             st.success("Cliente alterado com sucesso!")
-        
-        

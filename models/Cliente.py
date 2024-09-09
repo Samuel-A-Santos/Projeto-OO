@@ -1,6 +1,6 @@
-class Cliente:
-    def __init__(self, id, nome, idade, profissao):
-        self.id = id
-        self.nome = nome
-        self.idade = idade
-        self.profissao = profissao
+from mongoengine import Document, StringField, IntField
+
+class Cliente(Document):
+    nome = StringField(required=True)
+    idade = IntField(required=True)
+    profissao = StringField(required=True)
