@@ -18,3 +18,6 @@ def login_usuario(username, password):
 def logout_usuario():
     # Implementar lógica de logout se necessário
     pass
+
+def SelecionarTodos():
+    return Usuario.objects()

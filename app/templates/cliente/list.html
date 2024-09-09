@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Consultar Clientes{% endblock %}
+{% block content %}
+<h1>Consultar Clientes</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Profissão</th>
+            <th>Excluir</th>
+            <th>Alterar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.id }}</td>
+            <td>{{ cliente.nome }}</td>
+            <td>{{ cliente.idade }}</td>
+            <td>{{ cliente.profissao }}</td>
+            <td><a href="{{ url_for('excluir_cliente', id=cliente.id) }}">Excluir</a></td>
+            <td><a href="{{ url_for('alterar_cliente', id=cliente.id) }}">Alterar</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Página Principal{% endblock %}
+{% block content %}
+<h1>Bem-vindo, {{ username }}</h1>
+<a href="{{ url_for('incluir_cliente') }}">Incluir Cliente</a>
+<a href="{{ url_for('listar_clientes') }}">Consultar Clientes</a>
+{% endblock %}

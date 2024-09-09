@@ -4,9 +4,9 @@ import Controllers.ClienteController as ClienteController
 import Pages.Cliente.Create as PageCreateCliente
 
 def List():
-    params = st.query_params
-    if params.get("id") == None:
-        st.query_params.clear()
+    params = st.experimental_get_query_params()
+    if params.get("id") is None:
+        st.experimental_set_query_params()
         colms = st.columns((1, 2, 1, 2, 1, 1))
         campos = ['Nº', 'Nome', 'Idade', 'Profissão', 'Excluir', 'Alterar']
         for col, campo_nome in zip(colms, campos):
@@ -29,13 +29,12 @@ def List():
                 ClienteController.Excluir(item.id)
                 button_space_excluir.button(
                     'Excluído', 'btnExcluir' + str(item.id))
-                st.query_params.clear()  # Forçar recarga da página
+                st.experimental_set_query_params()
             if on_click_alterar:
-                st.query_params['id'] = [item.id]
-                st.query_params.clear()  # Forçar recarga da página
+                st.experimental_set_query_params(id=[item.id])
+                st.experimental_set_query_params()
     else:
         on_click_voltar = st.button("Voltar")
         if on_click_voltar:
-            st.query_params.clear()
-            st.query_params.clear()  # Forçar recarga da página
+            st.experimental_set_query_params()
         PageCreateCliente.Create()

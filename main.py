@@ -6,9 +6,11 @@ from typing import List
 import streamlit as st
 import Pages.Cliente.Create as PageCreateCliente
 import Pages.Cliente.List as PageListCliente
+import Pages.Admin as PageAdmin
 import services.database as db
 import Controllers.UsuarioController as UsuarioController
 
+# Conectar ao banco de dados
 db.conectar_banco()
 
 # Função para exibir a página de login
@@ -22,7 +24,7 @@ def login_page():
             st.session_state['logged_in'] = True
             st.session_state['username'] = username
             st.success(message)
-            st.query_params.clear()  # Forçar recarga da página
+            st.experimental_set_query_params()  # Forçar recarga da página
         else:
             st.error(message)
 
@@ -43,17 +45,20 @@ def main_page():
     st.sidebar.title(f"Bem-vindo, {st.session_state['username']}")
     if st.sidebar.button("Logout"):
         st.session_state['logged_in'] = False
-        st.query_params.clear()  # Forçar recarga da página
+        st.experimental_set_query_params()  # Forçar recarga da página
 
     Page_cliente = st.sidebar.selectbox(
-        'Cliente', ['Incluir', 'Consultar'], 0)
+        'Cliente', ['Incluir', 'Consultar', 'Admin'], 0)
 
     if Page_cliente == 'Consultar':
         PageListCliente.List()
 
     if Page_cliente == 'Incluir':
-        st.query_params.clear()
+        st.experimental_set_query_params()
         PageCreateCliente.Create()
+
+    if Page_cliente == 'Admin':
+        PageAdmin.Admin()
 
 # Verificar se o usuário está logado
 if 'logged_in' not in st.session_state:
