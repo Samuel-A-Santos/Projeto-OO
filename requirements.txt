@@ -1,0 +1,5 @@
+streamlit
+flask
+pymongo
+mongoengine
+werkzeug
