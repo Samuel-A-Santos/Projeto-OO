@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Login de Funcionário{% endblock %}
+{% block content %}
+<h1>Login de Funcionário</h1>
+<form method="post">
+    <label for="username">Nome de Usuário</label>
+    <input type="text" id="username" name="username" required>
+    <label for="password">Senha</label>
+    <input type="password" id="password" name="password" required>
+    <button type="submit">Login</button>
+</form>
+{% endblock %}

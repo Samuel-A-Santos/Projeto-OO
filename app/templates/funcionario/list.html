@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Consultar Funcionários{% endblock %}
+{% block content %}
+<h1>Consultar Funcionários</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Profissão</th>
+            <th>Excluir</th>
+            <th>Alterar</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for funcionario in funcionarios %}
+        <tr>
+            <td>{{ funcionario.id }}</td>
+            <td>{{ funcionario.nome }}</td>
+            <td>{{ funcionario.idade }}</td>
+            <td>{{ funcionario.profissao }}</td>
+            <td><a href="{{ url_for('excluir_funcionario', id=funcionario.id) }}">Excluir</a></td>
+            <td><a href="{{ url_for('alterar_funcionario', id=funcionario.id) }}">Alterar</a></td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <h3>Pontos de {{ funcionario.nome }}</h3>
+                {% for data, pontos in funcionarios_pontos[funcionario.id].items() %}
+                <h4>{{ data }}</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ponto in pontos %}
+                        <tr>
+                            <td>{{ ponto.entrada_formatada }}</td>
+                            <td>{{ ponto.saida_formatada }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

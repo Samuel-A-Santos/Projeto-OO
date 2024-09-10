@@ -1,12 +1,15 @@
 from models.Cliente import Cliente
+from models.Endereco import Endereco
 
-def Incluir(cliente):
+def Incluir(cliente, endereco):
+    cliente.endereco = endereco
     cliente.save()
 
 def SelecionarById(id):
     return Cliente.objects(id=id).first()
 
-def Alterar(cliente):
+def Alterar(cliente, endereco):
+    cliente.endereco = endereco
     cliente.save()
 
 def Excluir(id):

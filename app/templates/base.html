@@ -8,13 +8,17 @@
 </head>
 <body>
     <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if 'logged_in' in session and session['logged_in'] %}
-            <a href="{{ url_for('logout') }}">Logout</a>
-        {% else %}
-            <a href="{{ url_for('login_page') }}">Login</a>
-            <a href="{{ url_for('cadastro_page') }}">Cadastro</a>
-        {% endif %}
+        <div>
+            <a href="{{ url_for('index') }}">Home</a>
+        </div>
+        <div>
+            {% if 'logged_in' in session and session['logged_in'] %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login_page') }}">Login</a>
+                <a href="{{ url_for('cadastro_page') }}">Cadastro</a>
+            {% endif %}
+        </div>
     </nav>
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}

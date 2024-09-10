@@ -2,6 +2,13 @@
 {% block title %}Página Principal{% endblock %}
 {% block content %}
 <h1>Bem-vindo, {{ username }}</h1>
-<a href="{{ url_for('incluir_cliente') }}">Incluir Cliente</a>
-<a href="{{ url_for('listar_clientes') }}">Consultar Clientes</a>
+<div class="button-container">
+    {% if is_admin %}
+        <a class="button" href="{{ url_for('incluir_funcionario') }}">Incluir Funcionário</a>
+        <a class="button" href="{{ url_for('listar_funcionarios') }}">Consultar Funcionários</a>
+    {% else %}
+        <a class="button" href="{{ url_for('ver_perfil') }}">Ver Perfil</a>
+        <a class="button" href="{{ url_for('ponto_funcionario') }}">Registro de Ponto</a>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Registro de Ponto{% endblock %}
+{% block content %}
+<h1>Registro de Ponto</h1>
+<form method="post">
+    <button type="submit" name="registrar_entrada">Registrar Entrada</button>
+    <button type="submit" name="registrar_saida">Registrar Saída</button>
+</form>
+<h2>Histórico de Pontos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Entrada</th>
+            <th>Saída</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ponto in pontos %}
+        <tr>
+            <td>{{ ponto.data_formatada }}</td>
+            <td>{{ ponto.entrada_formatada }}</td>
+            <td>{{ ponto.saida_formatada }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
