@@ -3,14 +3,14 @@ from pymongo.server_api import ServerApi
 from mongoengine import connect
 import os
 
-uri = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+uri = os.getenv("MONGO_URI", "mongodb://mongo:27017")
 
 client = None
 
 def conectar_banco():
     global client
     client = MongoClient(uri, server_api=ServerApi('1'))
-    connect(host=uri)
+    connect(host=uri, alias='default')  # Adicione o alias 'default' para a conexão padrão
     print("Conexão com o banco de dados inicializada.")
 
 def testar_conexao():

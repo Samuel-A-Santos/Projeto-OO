@@ -1,4 +1,3 @@
-streamlit
 flask
 pymongo
 mongoengine

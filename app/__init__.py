@@ -1,12 +1,8 @@
 from flask import Flask
-from services.database import conectar_banco
+from app.routes import init_routes
 
 def create_app():
     app = Flask(__name__)
-    conectar_banco()
-
-    with app.app_context():
-        from .routes import init_routes
-        init_routes(app)
-        
+    app.secret_key = 'sua_chave_secreta_aqui'  # Defina uma chave secreta única e segura
+    init_routes(app)
     return app
