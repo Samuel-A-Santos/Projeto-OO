@@ -4,19 +4,27 @@ import Controllers.FuncionarioController as FuncionarioController
 from models.Funcionario import Funcionario
 from models.Endereco import Endereco
 from bson import ObjectId
+import services.database as db
+
+# Certifique-se de que a conexão com o banco de dados é inicializada
+print("Inicializando a conexão com o banco de dados nas rotas...")
+db.conectar_banco()
 
 def init_routes(app):
     @app.route('/')
     def index():
+        print("Rota / acessada")
         if 'logged_in' in session and session['logged_in']:
             return redirect(url_for('main_page'))
         return redirect(url_for('login_page'))
 
     @app.route('/login', methods=['GET', 'POST'])
     def login_page():
+        print("Rota /login acessada")
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
+            print(f"Tentativa de login com usuário: {username}")
             success, message = UsuarioController.login_usuario(username, password)
             if success:
                 session['logged_in'] = True
@@ -25,6 +33,7 @@ def init_routes(app):
                 funcionario = FuncionarioController.SelecionarByUsername(username)
                 if funcionario:
                     session['funcionario_id'] = str(funcionario.id)
+                    session['logged_in_funcionario'] = True
                 flash(message, 'success')
                 return redirect(url_for('main_page'))
             else:
@@ -33,6 +42,7 @@ def init_routes(app):
 
     @app.route('/cadastro', methods=['GET', 'POST'])
     def cadastro_page():
+        print("Rota /cadastro acessada")
         if request.method == 'POST':
             nome = request.form['nome']
             idade = request.form['idade']
@@ -43,6 +53,7 @@ def init_routes(app):
             cep = request.form['cep']
             username = request.form['username']
             password = request.form['password']
+            print(f"Tentativa de cadastro com usuário: {username}")
             success, message = UsuarioController.cadastrar_usuario(nome, idade, profissao, rua, cidade, estado, cep, username, password)
             if success:
                 session['logged_in'] = True
@@ -51,6 +62,7 @@ def init_routes(app):
                 funcionario = FuncionarioController.SelecionarByUsername(username)
                 if funcionario:
                     session['funcionario_id'] = str(funcionario.id)
+                    session['logged_in_funcionario'] = True
                 flash(message, 'success')
                 return redirect(url_for('main_page'))
             else:
@@ -59,20 +71,24 @@ def init_routes(app):
 
     @app.route('/main')
     def main_page():
+        print("Rota /main acessada")
         if 'logged_in' not in session or not session['logged_in']:
             return redirect(url_for('login_page'))
         return render_template('main.html', username=session['username'], is_admin=session.get('is_admin', False))
 
     @app.route('/logout')
     def logout():
+        print("Rota /logout acessada")
         session.pop('logged_in', None)
         session.pop('username', None)
         session.pop('is_admin', None)
         session.pop('funcionario_id', None)
+        session.pop('logged_in_funcionario', None)
         return redirect(url_for('login_page'))
 
     @app.route('/funcionario/incluir', methods=['GET', 'POST'])
     def incluir_funcionario():
+        print("Rota /funcionario/incluir acessada")
         if not session.get('is_admin', False):
             flash('Acesso negado!', 'danger')
             return redirect(url_for('main_page'))
@@ -95,6 +111,7 @@ def init_routes(app):
 
     @app.route('/funcionario/consultar')
     def listar_funcionarios():
+        print("Rota /funcionario/consultar acessada")
         if not session.get('is_admin', False):
             return redirect(url_for('ver_perfil'))
         funcionarios = FuncionarioController.SelecionarTodos()
@@ -105,6 +122,7 @@ def init_routes(app):
 
     @app.route('/funcionario/excluir/<id>')
     def excluir_funcionario(id):
+        print(f"Rota /funcionario/excluir/{id} acessada")
         if not session.get('is_admin', False):
             flash('Acesso negado!', 'danger')
             return redirect(url_for('main_page'))
@@ -114,6 +132,7 @@ def init_routes(app):
 
     @app.route('/funcionario/alterar/<id>', methods=['GET', 'POST'])
     def alterar_funcionario(id):
+        print(f"Rota /funcionario/alterar/{id} acessada")
         if not session.get('is_admin', False) and session['funcionario_id'] != id:
             flash('Acesso negado!', 'danger')
             return redirect(url_for('main_page'))
@@ -138,9 +157,11 @@ def init_routes(app):
 
     @app.route('/funcionario/login', methods=['GET', 'POST'])
     def login_funcionario():
+        print("Rota /funcionario/login acessada")
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
+            print(f"Tentativa de login de funcionário com usuário: {username}")
             funcionario = FuncionarioController.SelecionarByUsername(username)
             if funcionario and funcionario.password == password:
                 session['logged_in_funcionario'] = True
@@ -153,6 +174,7 @@ def init_routes(app):
 
     @app.route('/funcionario/ponto', methods=['GET', 'POST'])
     def ponto_funcionario():
+        print("Rota /funcionario/ponto acessada")
         if 'logged_in_funcionario' not in session or not session['logged_in_funcionario']:
             return redirect(url_for('login_funcionario'))
         funcionario_id = session['funcionario_id']
@@ -169,6 +191,7 @@ def init_routes(app):
 
     @app.route('/funcionario/perfil')
     def ver_perfil():
+        print("Rota /funcionario/perfil acessada")
         if 'logged_in_funcionario' not in session or not session['logged_in_funcionario']:
             return redirect(url_for('login_funcionario'))
         funcionario_id = session['funcionario_id']
