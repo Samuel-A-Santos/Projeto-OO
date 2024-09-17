@@ -6,7 +6,6 @@ from models.Endereco import Endereco
 from bson import ObjectId
 import services.database as db
 
-# Certifique-se de que a conexão com o banco de dados é inicializada
 print("Inicializando a conexão com o banco de dados nas rotas...")
 db.conectar_banco()
 
