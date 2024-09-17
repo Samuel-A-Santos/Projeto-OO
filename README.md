@@ -89,15 +89,6 @@
 - `Dockerfile`: Arquivo de configuração do Docker para a aplicação.
 - `docker-compose.yml`: Arquivo de configuração do Docker Compose para a aplicação.
 
-## Debugging
-
-1. Para verificar os prints de debug, você pode acessar os logs do serviço web:
-   ```sh
-   docker-compose logs -f web
-   ```
-
-2. Realize ações na aplicação (como login e cadastro) e observe os logs no terminal para ver os prints que foram adicionados.
-
 ## Parando a aplicação
 
 1. Para parar os serviços Docker, execute:
